@@ -1,6 +1,18 @@
-p><img src="./img/bus_systems/en-zhaw-ines-rgb.png" alt="Smiley face" width="176" height="92" style="float:right"> <br><br></p><h1>TSM_EmbHardw: Loop Optimisations</h1>
+<img src="./img/bus_systems/en-zhaw-ines-rgb.png" alt="Smiley face" width="176" height="92" style="float:right"> <br><br></p><h1>TSM_EmbHardw: Loop Optimisations</h1>
 
+----
+### Index
+- [1 Aims](#1-aims)
+- [2 Lecture Prologue](#2-lecture-prologue)
+- [3 Lecture](#3-lecture)
+- [4 Lecture Epilogue](#4-lecture-epilogue)
+- [5 Exercises](#5-exercises)
+- [6 Laboratory](#6-laboratory)
+- [Glossary](#glossary)
+- [References](#references)
+- [Answers to Questions](#answers-to-questions)
 
+----
 ## 1 Aims
 
 An introduction to various software optimisations including algorithmic optimisations and loop optimisations.
@@ -9,6 +21,8 @@ The first require some knowledge of the algorithm, the others are pure software 
 ----
 
 ## 2 Lecture Prologue
+
+ Not applicable for this lecture
 
 ----
 
@@ -416,6 +430,7 @@ If you choose a compiler for a platform you are acquainted with - you may have t
 You can modify the code to produce answers online.
 The timing measurements unfortunately simply don't work as expected  (seem to be deterministically random depending on the number of lines). 
 
+```C
 /* ---------- for a x86 platform with Linux as an OS ---------- */
 
 #include <stdlib.h>
@@ -451,12 +466,13 @@ int main ( void ) {
 
     (void) printf("Line: %d Time elapsed is %2.f\n", __LINE__,  time_diff);
 }
-
 ```
 
 ----
 
 ### Glossary
+
+---
 
 ### References
 
@@ -481,7 +497,6 @@ Last accessed 2014
 | Q3/E3 Loop Un-Switching | NUC      | 1662 us        | 1406 us          |          |
 | Q4/E4 Loop Peeling      | NUC      | 2262 us        | 2057 us          |          | 
 
-Q5
 
 ##### Platform Characteristics - NUC
 ```BASH

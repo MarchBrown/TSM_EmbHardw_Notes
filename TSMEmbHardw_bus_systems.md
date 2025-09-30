@@ -1,6 +1,19 @@
-<p><img src="./img/bus_systems/en-zhaw-ines-rgb.png" alt="Smiley face" width="176" height="92" style="float:right"> <br><br></p><h1>TSM_EmbHardw: Bus Systems</h1>
+<img src="./img/bus_systems/en-zhaw-ines-rgb.png" alt="Smiley face" width="176" height="92" style="float:right"> <br><br></p><h1>TSM_EmbHardw: Bus Systems</h1>
 
+----
+### Index
 
+- [1 Aims](#1-aims)
+- [2 Lecture Prologue](#2-lecture-prologue)
+- [3 Lecture](#3-lecture)
+- [4 Lecture Epilogue](#4-lecture-epilogue)
+- [5 Exercises](#5-exercises)
+- [6 Laboratory](#6-laboratory)
+- [Glossary](#glossary)
+- [References](#references)
+- [Answers to Questions](#answers-to-questions)
+
+----
 ## 1 Aims
 
 An introduction to parallel bus systems found in microcontrollers and SoCs from the viewpoint of bottlenecks in computer architectures.
