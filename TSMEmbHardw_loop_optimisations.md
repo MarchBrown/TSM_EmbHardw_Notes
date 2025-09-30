@@ -467,8 +467,29 @@ int main ( void ) {
     (void) printf("Line: %d Time elapsed is %2.f\n", __LINE__,  time_diff);
 }
 ```
+or - for a simpler version that may be better for those without much assembler experience
+```C
+#define LOOP_SIZE 10000
+    
+int main ( void ) {
 
+    long int array[LOOP_SIZE];
+    int c = 2;
+    int d = 3;
+
+    int e = c + d; 
+
+/* ********** Insert Code here ********** */
+
+    for (long int i = 0; i < LOOP_SIZE; i++) {
+        array[i] = c + d;
+    }
+
+/* ********** End Insert      ********** */
+}
+```
 ----
+
 
 ### Glossary
 
