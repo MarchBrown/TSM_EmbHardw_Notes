@@ -168,11 +168,10 @@ The lecture will pick up and develop several strands from the prologue, namely:
 
 There are a couple of filler slides ( ... if time remains) on 
 
-1. MAC DAM (Buffer descriptors & scatter-gather DMA)
+1. MAC DMA (Buffer descriptors & scatter-gather DMA)
 2. I/O device abstractions
 
-### 3.1 Additional Notes
-#### 3.1.1 Additional notes on AHB operation
+### 3.1 Additional Notes on AHB
 AHB supports four phases
 
 (1. arbitration)
@@ -185,8 +184,39 @@ These three stages are pipelined. It is possible for instance to place the addre
 
 The precise operation and the meaning of the signals can be read in the relevant documentation [[ARM-2]](#6)
 
-----
+### 3.2 Additional Notes on Alignment / memcpy()
+memcpy() is a standard C library function used for copying blocks of memory around. 
+It’s the kind of standard function that lots of people just use without considering what it does. 
+Unfortunately its behaviour can cause lots of surprises. 
+There is no universal standard implementation but there are several derivatives. 
+The graphs above were taken from an article from eetimes/embedded.com  by Michael Morrow -> http://www.eetimes.com/design/embedded/4024961/Optimizing-Memcpy-improves-speed  but the issue is well known. Morrow compares a simple byte-for-byte (green – first column), one that recognises byte alignment on 32-bit boundaries (pink – middle column) and one that manipulates the data as shown as shown in the diagram on the top. He then goes and compares the performance of the three algorithms on various data transfer sizes. Given that there is no cache enabled and the source and, in the first two cases, destination addresses are on 4-byte boundaries, the first chart shows the performance for 20 byte data blocks, the second for 128 bytes and the third for his optimised memcpy() for non-aligned source and destination addresses. Its clear that each algorithm has its pros and cons and the message here is that we should think about what we are trying to do before just using memcpy. In our Institute we have often re-written memcpy() for specific performance features.
+Other similar functions are strcpy() and memset()      
 
+### 3.3 Additional Notes on DMA
+We can allocate a DMA unit – here also we need to look at how DMA operates.
+DMA is judged to be faster than a memcpy() because the instruction (and loop) overhead is expensive. 
+On the other hand memcpy()’s are easy to schedule as they are merely part of the sequential program. 
+DMA implements the loop in hardware which makes it faster than memcpy() but it is a different bus-master and hence it contests the bus (or resources such as memory) with a continuously executing resource, the CPU. 
+It also requires scheduling. 
+The whole point of the DMA is to work in parallel with a computing resource. 
+
+This means that there are three steps to using DMA:
+1. Initalise DMA (CPU)
+2. Perform DMA (DMA -> non linear improvement)
+3. Post-hoc processing (CPU) 
+
+There are several operation modes of DMA:
+
+**Burst Mode:** the contiguous block is transferred in one – this means that the resource (system bus and/or memory) is solely reserved by the DMA unit and the CPU has no access to the resource – i.e. either it essentially stops or, if it can run solely from cache, it does its bit internally. 
+
+**Cycle Stealing Mode:** by continually requesting and yielding the control of the bus/resource the DMA controller can force interleaving which, if the CPU is the priority master, should mean that the CPU is not much braked. 
+This does however mean that the DMA transfer takes longer.
+
+**Transparent Mode:** In this case the CPU never waits for the resource (f.i. system bus) and the DMA only transfers when the CPU doesn’t need the bus. This requires that the DMA and the CPU must be intimately connected to ensure that the prediction (i.e. the fact that the CPU will not require the bus for a certain number of cycles) functions correctly. Obviously this affects the run-time of the program least but it does increase the length of the DMA transfer, and hence the achievable scheduling.  …
+
+**Flyby Mode:** this isn’t supported by many microcontrollers but it transfers data in one cycle rather than the read/write cycle. 
+
+----
 ## 4 Lecture Epilogue
 
 The further development of parallel bus systems has been the development of: 
@@ -199,15 +229,16 @@ This is important in several industries were fully deterministic execution is co
 ----
 
 ## 5 Exercises
-### Q 1
+### Question 1
 a. Name two bus system categories used in computer architectures
 
 b. Name an example of each
 
 c. What is the relevance of a bus system to computer architecture
 
-### Q 2
-a. A Double Data Rate (DDR) SDRAM interface of an embedded microcontroller professes a 16-bit dedicated parallel interface clocked @ 133 MHz. DDR facilitates transfer on the rising and falling edge of the bus clock. 
+### Question 2
+a. A Double Data Rate (DDR) SDRAM interface of an embedded microcontroller professes a 16-bit dedicated parallel interface clocked @ 166 MHz. 
+DDR facilitates transfer on the rising and falling edge of the bus clock. 
 What is the theoretical transfer speed in MBytes/s?
 
 b. For efficiencies' sake the data is transferred in transactions of 8 beats of each one 16-bit word. 
@@ -234,35 +265,57 @@ Bus contention - when two potential bus masters access the bus at the same time,
 Mutual exclusion - if one actor holds a resource exclusively whilst other actors must wait until the resource is released. 
 
 ### References
-[[Ampro]](#1)
+<a id="901">Ampro</a>
 ISA Bus Timing Diagrams (1998).
 Ampro Computers Inc.
 http://www.ee.nmt.edu/~rison/ee352_spr12/PC104timing.pdf
 Last accessed 15.07.2025
 
-[[ARM-2]](#6)
+<a id="902">ARM-2</a>
 AMBA AHB Protocol Specification
 https://developer.arm.com/documentation/ihi0033/c 
 Last accessed 15.07.2025
 
-[[ARM-3]](#7)
+<a id="903">ARM-3</a>
 AMBA AXI Protocol Specification
 https://developer.arm.com/documentation/ihi0022/l/?lang=en
 Last accessed 15.07.2025
 
-[[Buchanan]](#3)
+<a id="904">Buchanan</a>
 Buchanan (2000) 
 'Computer Busses', 
 Butterworth Heinemann.
 
-[[Hennessy and Patterson]](#4) 
+<a id="905">Hennessy and Patterson</a> 
 Hennessy & Patterson (2017)
 'Computer Architecture: A Quantitative Approach'
 6th Edition, Elsevier LTD. 
 Appendix F Interconnection Networks
 
-[[Yan et. al.]](#5)
-J. Jalle, J. Abella, E. Quiñones, L. Fossati, M. Zulianello and F. J. Cazorla, "AHRB: A high-performance time-composable AMBA AHB bus," 2014 IEEE 19th Real-Time and Embedded Technology and Applications Symposium (RTAS), Berlin, Germany, 2014, pp. 225-236, doi: 10.1109/RTAS.2014.6926005.
+<a id="907">Jalle</a>
+J. Jalle, J. Abella, E. Quiñones, L. Fossati, M. Zulianello and F. J. Cazorla, 
+'AHRB: A high-performance time-composable AMBA AHB bus' 
+(2014),
+IEEE 19th Real-Time and Embedded Technology and Applications Symposium (RTAS), Berlin, Germany, 2014, pp. 225-236, doi: 10.1109/RTAS.2014.6926005.
+
+<a id="907">Peng</a>
+Yu Peng 2 Yanmeng Ba1 Bo Li3,
+(2009)
+'A Design of PCI-Bus High Speed Serial Communication Card.' 
+Proc. Of the Ninth International Conference on Electronic Measurement & Instruments ICEMI’2009. 
+(http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=05273990 .
+
+<a id="908">Huang</a>
+Tai-Yi Huang; Liu, J. W -S; Hull, D.,
+(1996)
+'A method for bounding the effect of DMA I/O interference on program execution time'
+Real-Time Systems Symposium, 1996., 17th IEEE, vol., no., pp.275,285, 4-6 Dec 1996
+
+<a id="909">Morrow (2004)</a>
+Morrow, M
+(2004)
+https://www.embedded.com/optimizing-memcpy-improves-speed/?utm_source=eetimes&utm_medium=networksearch
+Last accessed 01.09.2025
 
 ----
 ### Answers to questions
