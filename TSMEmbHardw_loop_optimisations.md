@@ -252,7 +252,7 @@ For questions Q1..Q4
 #define LOOP_SIZE 1e6
 ``` 
 
-### Q 1 Loop Jamming / Loop Fusion
+### Question 1 Loop Jamming / Loop Fusion
 
 Examine the following code
 ```C
@@ -283,7 +283,7 @@ Examine the following code
 ```
 Fuse the two loops.
 
-### Q 2 Loop Hoisting
+### Question 2 Loop Hoisting
 Examine the following code
 
 ```C
@@ -311,7 +311,7 @@ Examine the following code
 ```
 Hoist invariant code out of the loop
 
-### Q 3 Loop Un-Switching
+### Question 3 Loop Un-Switching
 Examine the following code
 
 ```C
@@ -339,7 +339,7 @@ Examine the following code
 ```
 Un-Switch the code
 
-### Q 4 Loop Peeling
+### Question 4 Loop Peeling
 Examine the following code:
 
 ```C
@@ -378,7 +378,7 @@ Examine the following code:
 
 Peel this code
 
-### Q 5 Loop Unrolling
+### Question 5 Loop Unrolling
 
 Given the program code below. Assume that all instructions execute in a single processor cycle (including the JLT instruction !).
 
@@ -420,7 +420,27 @@ compiles to:
 
 ## 6 Laboratory
 
-Exercises 1..4 can be checked/solved on the platform: 
+### Lab 1
+Implement the solution to Question 1. 
+You can do this on a Linux or Windows installation or you can see below for implementation hints.
+
+### Lab 2
+Implement the solution to Question 2.
+You can do this on a Linux or Windows installation or you can see below for implementation hints.
+
+### Lab 3
+Implement the solution to Question 3.
+You can do this on a Linux or Windows installation or you can see below for implementation hints.
+
+### Lab 4
+Implement the solution to Question 4.
+You can do this on a Linux or Windows installation or you can see below for implementation hints.
+
+### Lab 5
+Implement loop unrolling for one of the solutions to Questions 1..4, or the solution presented in the slides.
+
+### Implementation Hint
+Exercises 1..5 can be checked/solved on the platform: 
 ```
 https://godbolt.org/
 ```
@@ -488,8 +508,9 @@ int main ( void ) {
 /* ********** End Insert      ********** */
 }
 ```
-----
 
+
+----
 
 ### Glossary
 
@@ -506,18 +527,18 @@ Last accessed 30.09.2025
 Plessl, C.
 'Introduction to Compilers'
 http://homepages.uni-paderborn.de/plessl/lectures/2011-Codesign/slides/02-Compiler.pdf
-Last accessed 2014
+Last accessed ~2014
 
 ----
 ### Answers to questions
 
+#### Questions 1..4
 | Question / Exercise     | Platform | Default Timing | Optimised timing | Comments |
 |-------------------------|----------|----------------|------------------|----------|
 | Q1/E1 Loop Jamming      | NUC      | 6429 us        | 1500 us          |          |
 | Q2/E2 Loop Hoisting     | NUC      | 3106 us        | 1403 us          |          | 
 | Q3/E3 Loop Un-Switching | NUC      | 1662 us        | 1406 us          |          |
-| Q4/E4 Loop Peeling      | NUC      | 2262 us        | 2057 us          |          | 
-
+| Q4/E4 Loop Peeling      | NUC      | 2262 us        | 2057 us          |          |
 
 ##### Platform Characteristics - NUC
 ```BASH
@@ -541,5 +562,21 @@ CPU max MHz:         4700.0000
 CPU min MHz:         400.0000
 BogoMIPS:            5606.40
 ```
-
+#### Question 5
+1. ```C
+   CMP R0,#10000            
+   JLT loop
+   ```
+2. ```text
+   Prologue: 4 cycles
+   Kernel: 8 * 10001 cycles
+   Epilogue: 3 cycles
+   ```
+3. two instructions removed so 8/6 = 1.3x
+4. two instructions removed -> 6 instructions * 100000
+5. ```text
+   allocation: Registers made available by ISA
+   binding: variables to registers - operations to ALU
+   scheduling: choice of instruction sequence (abeit, not much choice here)
+   ```
 ----
