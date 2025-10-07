@@ -341,3 +341,9 @@ A2c: If both microprocessors are independent and transferring data according to 
 Arbitration must be used. This means that each time the processor wishes to initiate a transaction, the bus must be requested from the arbiter. If the bus is gained and released on a transaction basis then a First Come First Served (FIFO) arbiter will effect an interleaving, possibly irregular, of  transactions reflecting the queue of requests from the controllers.  
 
 ----
+
+### Version Notes
+
+| Version | By | Date | Comments |
+| ------- | ---- | ------ | ----------------------- |
+| V1.1 | donn | 09.25 | Corrected typo in Q2 |

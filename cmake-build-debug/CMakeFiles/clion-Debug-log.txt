@@ -1,0 +1,1 @@
+CMakeLists.txt not found in N:\Documents\labs\TSM_EmbHardw_Notes Select CMakeLists.txt
