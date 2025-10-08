@@ -260,14 +260,11 @@ int main ( void ) {
     int e = 0;
 
     for (long int i = 0; i < LOOP_SIZE; i++) {
-        e = c * d + e;
-        array[i] = e;
+        array[i] = c * d;
     }
-
-/* ********** End Insert      ********** */
 }
 ```
-1. What parts of the code can be offloaded to a GPU and what parts should remain on the host? What does your solution actually do?
+1. What parts of the code can be offloaded to a GPU and what parts should remain on the host? What is required on the host side?
 2. If the suggested (openCL) work_group_size/local_size is 32, what is the NDRange and the range of local indices?
 3. Supposing the number of executing cores available is 32 and scheduling of kernels/threads is strictly in-order issuance and in-order execution. What global thread ID will execute on what core after three work-items have been processed?
 4. Structure the RGB2Gray code as a GPU-bound kernel.
@@ -298,8 +295,7 @@ int main ( void ) {
 /* ********** Insert Code here ********** */
 
     for (long int i = 0; i < LOOP_SIZE; i++) {
-        e = c * d + e;
-        array[i] = e;
+        array[i] = c * d;
     }
     
     (void)printf("The values of the first two elements of array[i] are %d and %d\n", array[0], array[1]);
