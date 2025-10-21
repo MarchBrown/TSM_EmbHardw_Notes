@@ -232,7 +232,7 @@ compiles to:
 
 [Answer](#answer-to-exercise-1---custom-instructions)
 
-### Exercise 3 - SIMD Vector Processing
+### Exercise 2 - SIMD Vector Processing
 1. A 16 lane vector of uint8 is how large?
 2. Two of these vectors are multiplied together. The answer is stored in a vector of the same size. How many lanes of what type does this vector have?
 3. The following arrays are added together in vectors of 64 bits. How many instructions are required and how large is the result array? Write psuedo code to achieve this target

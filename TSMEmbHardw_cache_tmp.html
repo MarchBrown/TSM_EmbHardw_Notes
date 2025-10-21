@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TSMEmbHardw_cache.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p><img src="./img/bus_systems/en-zhaw-ines-rgb.png" alt="Smiley face" width="176" height="92" style="float:right"> <br><br></p><h1>TSM_EmbHardw: Cache and Tightly Coupled Memory</h1></p>
+<hr>
+<h3 id="index">Index</h3>
+<ul>
+<li><a href="#1-aims">1 Aims</a></li>
+<li><a href="#2-lecture-prologue">2 Lecture Prologue</a></li>
+<li><a href="#3-lecture">3 Lecture</a></li>
+<li><a href="#4-lecture-epilogue">4 Lecture Epilogue</a></li>
+<li><a href="#5-exercises">5 Exercises</a></li>
+<li><a href="#6-laboratory">6 Laboratory</a></li>
+<li><a href="#glossary">Glossary</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#answers-to-exercise-questions">Answers to exercise questions</a></li>
+</ul>
+<hr>
+<h2 id="1-aims">1 Aims</h2>
+<p>In this lecture we discover some ways to use cache and tightly coupled memory effectively.
+These include correct alignment, prefetching, tiling and locking and some considerations for tightly coupled memory.</p>
+<hr>
+<h2 id="2-lecture-prologue">2 Lecture Prologue</h2>
+<p>The concept of cache is an old one. Both <a href="#901">Hardy</a> and <a href="#902">Hennesy and Patterson</a> handle the basics and advanced concepts quite well.
+Our interest is in the effective use of cache and less how it functions.</p>
+<p>During exam preparation students will understand and be able to explain all the concepts printed <strong>in bold</strong>.</p>
+<h3 id="21-cache---fundamental-principles">2.1 Cache - Fundamental Principles</h3>
+<p>Research in the 60's formulated the principles of <strong>locality</strong> quite quickly.
+A program spends significant periods of time (<strong>temporal locality</strong>) in sections of code (loops in other words) and data (<strong>spatial locality</strong>).<br>
+Putting the following together</p>
+<ul>
+<li>Fetching code/data from RAM is expensive in time</li>
+<li>Principle of locality means that some sections of code/data will be frequently accessed</li>
+<li>Local temporary storage of this code/data will save time and increase performance of the platform</li>
+<li>To preserve performance this local memory should be maintenance free and so transparent to the programmer</li>
+<li>RAM is expensive in space</li>
+</ul>
+<p>brings us to the idea of cache.</p>
+<p>Cache is part of the <strong>memory hierarchy</strong> and typically multilevel L1 -&gt; L3.
+L1 and L2 are typically within the microcontroller package, L3 external.
+L1 and L2 are standard on midrange embedded processors.</p>
+<p>Cache is commonly understood as a small, hardware managed, memory tightly coupled with the processor holding code and data sparing the processor from avoidable external memory fetches.
+To a certain extent cache can be considered a form of <strong>loop optimisation</strong>.
+The other form of memory tightly attached to the CPU is tightly coupled memory (TCM), or scratchpad memory (SPM).
+This memory is in the address range of the processor and is not transparent to the programmer.</p>
+<p>Cache size and policies affect the hit rate.
+The <strong>hit rate</strong> is the probability that the looked-for datum is resident in the cache.
+For example a cache with a hit rate of 80%, a very low number, will execute a read in 2 CPU cycles.
+For the remaining 20% the CPU must access the system bus at a cost of 3 additional cycles.
+Therefore, for say 10 instructions the cost is 10<em>0.8</em>2 + 10*(1-0.8)<em>5 = 16 + 10 CPU cycles.
+Hence, for nearly 40% of the time the CPU would be unable to get to 20% of the instructions.
+If the hit rate was to be increased to a more reasonable number such as 90% then the arithmetic would be:
+10</em>0.9<em>2 + 10</em>(1-0.9)*5 = 18 +5 CPU cycles<br>
+The <strong>miss rate</strong> is decreased by half.</p>
+<figure class="image">
+  <img src="file:///n:/Documents/labs/TSM_EmbHardw_Notes/img/05_cache/cache_basic_architecture.png" alt="Depiction of the basic cache architecture">
+  <figcaption><b>Figure 1:</b> Depiction of the basic cache architecture</figcaption>
+</figure>
+<h3 id="22-cache-and-the-basic-read-operation">2.2 Cache and the Basic Read Operation</h3>
+<p>Cache operation can be sumerised as follows:</p>
+<ul>
+<li>If the CPU requires data or code (data read / instruction fetch) it will generate an address</li>
+<li>If the contents of that address are not in cache the drivers will be activated and external components will be accessed</li>
+<li>This is known as a <strong>cache miss</strong></li>
+<li>In the case of a cache miss, the contents of that address will be placed in cache memory whilst it is being transferred to the CPU</li>
+<li>Address contents are transferred in <strong>cache lines</strong>, at the time of writing commonly 64 bytes.</li>
+<li>This is known as a <strong>line-fill</strong></li>
+<li>The next time the address or a surrounding address, is accessed the contents will already be in cache, representing a <strong>cache hit</strong></li>
+<li>A <strong>compulsory line fill</strong> is one which could not have been avoided using a better cache policy.</li>
+</ul>
+<p>A design which allows all signals from the CPU to access the main memory regardless whether it’s a hit or a miss is known as a <strong>look aside</strong> implementation (Fig 2. top).
+This makes for faster single-processor read miss accesses since by the time the cache controller realises it has a miss, the system memory is well on its way to getting the required data ready for the CPU.</p>
+<p><strong>Look through</strong> (Fig 2 bottom) or in-line caches are typical where the cache controller decides whether to initiate a system memory read/write or not.
+This kind of implementation massively reduces the CPU-required bandwidth at the cost of the so-called <strong>lookup penalty</strong>, the time required to decide that a system memory access is required.
+In a read hit the system bus address and data buffers remain switched off and the Cache Data Memory buffers are switched on, allowing the datum to proceed to the CPU as if it were coming from system memory, only faster.
+During a read miss the opposite is true – after the lookup penalty the system bus address and data buffers are turned on and those of the Cache Data Memory to write.</p>
+<figure class="image">
+  <img src="file:///n:/Documents/labs/TSM_EmbHardw_Notes/img/05_cache/cache_read_policies.png" alt="Depiction of the principles of reading operations with cache">
+  <figcaption><b>Figure 2:</b> Depiction of the principles of reading operations with cache</figcaption>
+</figure>
+<h3 id="23-cache-and-the-basic-write-operation">2.3 Cache and the Basic Write Operation</h3>
+<p>Code or read-only data that is in cache can be discarded when it becomes out of context.
+Written data necessitates transfer to in main memory once the cache line is to be otherwise occupied.
+Write hits are generally handled in two ways:</p>
+<p><strong>Write through</strong> - (Fig 3. top) update of both the Cache Data Memory and the System memory avoiding the issue of cache coherence.
+Cache coherence is the issue when there are two different versions of the datum at any one period of time in the system.
+This is known as a write-through policy.</p>
+<p><strong>Copy back</strong> (Fig 3. middle) policy is to only write the datum into the cache when absolutely necessary.
+This time comes, for instance, when a written cache line is to be evicted.
+This policy prefers operational speed at the expense of management effort to ensure cache coherence.
+Typically, this policy is supported by a dirty bit for each line.
+The dirty bit signifies that a cache line has been written to so that when the time comes for the cache line to be replaced, resident data is <strong>evicted</strong>.</p>
+<p>Write misses are also handled in a variety of ways.
+For instance - in reference to the figures below, and not complete by far:</p>
+<ul>
+<li>The cached line can be ignored and the result written directly to memory</li>
+<li>The cached line is written to both memory and cache</li>
+<li>The line is simply written to cache and another policy implemented after that</li>
+<li>Update the cache line regardless of whether there is a cache hit or miss (Fig 3 bottom)</li>
+</ul>
+<figure class="image">
+  <img src="file:///n:/Documents/labs/TSM_EmbHardw_Notes/img/05_cache/cache_write_policies.png" alt="Depiction of the principles of writing operations with cache">
+  <figcaption><b>Figure 3:</b> Depiction of three principles of write operations with cache</figcaption>
+</figure>
+<h3 id="24-cache-bypassing-for-io">2.4 Cache Bypassing for I/O</h3>
+<p>There is also a strong case to be made for ignoring cache entirely and implementing an uncached addresses.
+This is useful in systems where I/O is memory mapped.</p>
+<figure class="image">
+  <img src="file:///n:/Documents/labs/TSM_EmbHardw_Notes/img/05_cache/cache_bypassing.png" alt="Depiction of the principles of I/O operations with cache">
+  <figcaption><b>Figure 4:</b> Depiction of the principles of I/O operations with cache</figcaption>
+</figure>
+<hr>
+<h2 id="3-lecture">3 Lecture</h2>
+<p><a href="#index">Back To Index</a></p>
+<p>Having recalled the basics of cache operation we now need to look at how to use it properly.</p>
+<p>We shall look at</p>
+<ol>
+<li>Alignment</li>
+<li>Prefetching</li>
+<li>Tiling</li>
+<li>Locking</li>
+<li>Tightly Coupled Memory</li>
+</ol>
+<p>as well as some relevant case studies</p>
+<h3 id="31-alignment">3.1 Alignment</h3>
+<p>(This section intentionally left blank)</p>
+<h3 id="32-notes-to-cache-prefetching">3.2 Notes to Cache Prefetching</h3>
+<p>(This section intentionally left blank)</p>
+<h3 id="33-notes-to-tiling">3.3 Notes to Tiling</h3>
+<p>(This section intentionally left blank)</p>
+<h3 id="34-notes-to-cache-locking">3.4 Notes to Cache Locking</h3>
+<p>(This section intentionally left blank)</p>
+<h3 id="35-tightly-coupled-memory">3.5 Tightly Coupled Memory</h3>
+<p>(This section intentionally left blank)</p>
+<hr>
+<h2 id="4-lecture-epilogue">4 Lecture Epilogue</h2>
+<p><a href="#index">Back To Index</a></p>
+<h3 id="40-cache-generalities">4.0 Cache Generalities</h3>
+<p>Some processors support instructions for cache manipulations.
+The GNU compiler <a href="#933">[GNU-3]</a> offers a <code>__builtin</code> function to clear the code cache.
+Linux <a href="#950">[MAN-1]</a> offers a function to flush either cache</p>
+<pre class="hljs"><code><div>       <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/cachectl.h&gt;</span></span>
+
+       <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">cacheflush</span><span class="hljs-params">(<span class="hljs-keyword">int</span> nbytes;
+                      <span class="hljs-keyword">void</span> addr[nbytes], <span class="hljs-keyword">int</span> nbytes, <span class="hljs-keyword">int</span> cache)</span></span>;
+</div></code></pre>
+<h3 id="41-cache-alignment">4.1 Cache Alignment</h3>
+<p>The alignment problem is twofold</p>
+<ul>
+<li>The arrays (input data) are not aligned on cache-line boundaries</li>
+<li>Two arrays that may be used in a common calculation cause cache use conflicts</li>
+</ul>
+<p><strong>Real-World Support</strong>
+The language AND/OR compiler can be given hints on preferred placement. for instance</p>
+<pre class="hljs"><code><div>        <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdalign.h&gt;</span></span>
+        
+        <span class="hljs-comment">// C11-&gt; C23</span>
+        _Alignas(expression)
+        
+        <span class="hljs-comment">// C23 -&gt;</span>
+        <span class="hljs-keyword">alignas</span>(expression)
+</div></code></pre>
+<p>The compiler generally determines allocation in the address space and interference with this principle is not preferred.
+If however you can't resist, then:</p>
+<pre class="hljs"><code><div>        <span class="hljs-keyword">int</span> x __attribute__ ((aligned (<span class="hljs-number">16</span>))) = <span class="hljs-number">0</span>;
+</div></code></pre>
+<p>See: <a href="#931">[GNU-1]</a></p>
+<p>This represents an alignment to a word size (affecting f.i. bus accesses), not explicitly to a cache line boundary which is a <em>runtime</em> attribute.
+If you know the cache size - most ways of finding this out are runtime specific - then you may be willing to take that chance.</p>
+<p>With two arrays it is the relative positioning that is important.
+Both arrays will have different tag addresses but if the indexes are the same (and both are cache aligned) then they will overlap, and that can be problematic.
+The  ways of alleviating this are:</p>
+<ul>
+<li>if the size of the individual arrays are smaller than the cache then making a two-dimensional array or a structure with two arrays can be is the way to go</li>
+<li>if the size of the individual arrays are larger than the cache then the introduction of padding may alleviate the issue</li>
+</ul>
+<p>For further thoughts see: <a href="#905">Hong</a></p>
+<h3 id="42-cache-pre-fetching">4.2 Cache Pre-Fetching</h3>
+<p><strong>Real-World Support</strong></p>
+<p>The GNU compiler offers a built-in function (as previously seen in custom instructions)</p>
+<pre class="hljs"><code><div>          <span class="hljs-keyword">void</span> __builtin_prefetch (<span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *addr, ...);
+</div></code></pre>
+<p>See <a href="#932">[GNU-2]</a>
+The GNU compiler also offers prefetching optimisations:
+See <a href="#933">[GNU-3]</a></p>
+<p><strong>Useful Literature</strong>
+The article from <a href="#908">Vanderwiel</a> is well worth consulting especially for its ideas on hardware pre-fetching.
+For further thoughts see: <a href="#906">Kuehn</a></p>
+<h3 id="43-tiling">4.3 Tiling</h3>
+<p>There is an exhaustive body of work for varying application domains on this theme - IEEExplore is a useful starting point.</p>
+<p>In the context of dedicated GPU architectures a <code>tiler</code> was often included in the GPU architecture to ensure that the data was efficiently collected into the GPU and processed there.</p>
+<figure class="image">
+  <img src="file:///n:/Documents/labs/TSM_EmbHardw_Notes/img/05_cache/Utgard.svg" alt="Tiling in an ARM Utgard GPU">
+  <figcaption><b>Figure 5:</b> Tiling in an ARM Utgard GPU</figcaption>
+</figure>
+<p>From: <a href="#940">ARM</a></p>
+<h3 id="44-cache-locking">4.4 Cache Locking</h3>
+<p>The operation of locking the cache is very useful in n-way associative caches since several routines (code) or arrays (data) can be locked in cache and yet enough ways are available for “random” cache accesses.
+This helps avoid manipulating the run-time memory map at compile-time.
+The sequence for achieving this – typical for any locking sequence is: to</p>
+<ol>
+<li>Invalidate the caches</li>
+<li>Load the caches in some way</li>
+<li>Lock the cache</li>
+</ol>
+<p>For an imaginative and entertaining way of illustrating cache locking we can consider the MPC8349e <a href="#960">[NXP-1]</a>.
+The MPC8349e implements data and instruction caches of 32kBytes each with a line size of 8 words and are both 8-way associative.
+Loading and locking the cache is achieved as follows:</p>
+<p>In the case of instructions these are done using a speculative fetch.
+For this microcontroller, an instruction sequence of a divide followed by a branch is carried out.
+The divide because it needs lots of cycles during which the code at the destination of the branch is loaded speculatively into cache.
+This functions because the processor is superscaler supporting out-of-order completion.
+If the branch is not fulfilled then whilst these instructions will not be executed, they are in cache and marked valid.
+It is then possible to lock either the entire instruction cache or simply this specific way.</p>
+<h3 id="45-tightly-coupled-memory">4.5 Tightly Coupled Memory</h3>
+<p>See for instance <a href="#908">Panda 2002</a> &amp; <a href="#907">Panda 2000</a></p>
+<hr>
+<h2 id="5-exercises">5 Exercises</h2>
+<p><a href="#index">Back to Index</a></p>
+<h3 id="exercise-1---associative-cache-addressing">Exercise 1 - Associative Cache Addressing</h3>
+<p>Assume a 4-way cache of block size 32 bytes and total size 8 kByte on a 32-bit architecture.
+What are the number of offset, set and tag bits?</p>
+<p><a href="#answer-to-exercise-1---associative-caches">Answer</a></p>
+<h3 id="exercise-2---cache-terminology">Exercise 2 - Cache Terminology</h3>
+<p>Given the following code:</p>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MAXSIZE 32</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">swap</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> *, <span class="hljs-keyword">int</span> *, <span class="hljs-keyword">int</span>)</span></span>;
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> location = 0x10000000</span>
+<span class="hljs-keyword">int</span> a[MAXSIZE] = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, … <span class="hljs-number">30</span>, <span class="hljs-number">31</span>, <span class="hljs-number">32</span>};
+
+function (<span class="hljs-keyword">int</span> *a) {
+	<span class="hljs-keyword">int</span> temp;		
+    temp = a[<span class="hljs-number">0</span>];		<span class="hljs-comment">// line A</span>
+	<span class="hljs-keyword">return</span> temp;
+}
+</div></code></pre>
+<p>How often is the cache flushed?</p>
+<p><a href="#answer-to-exercise-2---cache-terminology">Answer</a></p>
+<h3 id="exercise-3---cache-hit-and-miss-rates">Exercise 3 - Cache Hit and Miss Rates</h3>
+<p>A 100MHz. processor system has a two layer cache system with the following characteristics</p>
+<p>Cache Layer 1 access time T<sub>c1</sub> = 4 clock cycles
+Cache Layer 2 access time T<sub>c2</sub> = 6 clock cycles
+Main memory access time T<sub>m</sub> = 8 clock cycles</p>
+<p>Assume a hit rate (h) of 90% for cache layers 1 and 2. What’s the average access time?</p>
+<p>Hint: use the equations</p>
+<p>T<sub>a2</sub> = T<sub>c2</sub> + (1-h) * T<sub>m</sub></p>
+<p>T<sub>a1</sub> = T<sub>c1</sub> + (1-h) * T<sub>a2</sub></p>
+<p>which give you the average access time of the second and first layer cache resp.</p>
+<p><a href="#answer-to-exercise-3---hit-and-miss-rates">Answer</a></p>
+<h3 id="exercise-4---prefetching">Exercise 4 - Prefetching</h3>
+<p>The processor has a direct mapped data cache with lines of 32 bytes and an integer size of 32 bits.
+Given the following code:</p>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MAXSIZE 32</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">swap</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> *, <span class="hljs-keyword">int</span> *, <span class="hljs-keyword">int</span>)</span></span>;
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> location = 0x10000000</span>
+<span class="hljs-keyword">int</span> a[MAXSIZE] = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, … <span class="hljs-number">30</span>, <span class="hljs-number">31</span>, <span class="hljs-number">32</span>};
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> location = 0x20000010</span>
+<span class="hljs-keyword">int</span> b[MAXSIZE] = {<span class="hljs-number">32</span>, <span class="hljs-number">31</span>, <span class="hljs-number">30</span>, … <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>};
+
+swap (&amp;a, &amp;b, MAXSIZE) {
+     <span class="hljs-keyword">int</span> temp;
+     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i&lt;=MAXSIZE; i++) {
+         temp = a[i]; <span class="hljs-comment">//line C</span>
+         a[i] = b[i]; <span class="hljs-comment">//line D</span>
+         b[i] = temp; <span class="hljs-comment">//Line E</span>
+     }
+}
+</div></code></pre>
+<ol>
+<li>How many compulsory cache misses does this code generate?</li>
+<li>Re-locate the arrays to give each a unique location in cache whilst retaining the tag address.</li>
+<li>Use prefetches to eliminate the compulsory cache misses – discuss qualitatively how much faster the solution is.
+Explain your solution in terms of useless pre-fetches and cache</li>
+</ol>
+<p><a href="#answer-to-exercise-4---prefetching">Answer</a></p>
+<hr>
+<h2 id="6-laboratory">6 Laboratory</h2>
+<p>(This section intentionally left blank)</p>
+<p><a href="#index">Back To Index</a></p>
+<hr>
+<h3 id="glossary">Glossary</h3>
+<p>(This section intentionally left blank)</p>
+<hr>
+<h3 id="references">References</h3>
+<p><a id="900">Vanderwiel</a>
+Steven P. Vanderwiel and David J. Lilja. 2000.
+Data prefetch mechanisms.
+ACM Comput. Surv. 32, 2 (June 2000), 174–199.
+https://doi.org/10.1145/358923.358939
+http://www.ece.lsu.edu/tca/papers/vanderwiel-00.pdf</p>
+<p><a id="901">Hardy</a>
+J. Hardy
+&quot;The Cache memory book”.
+Second Edition, Academic Press, San Diego 1998.</p>
+<p><a id="902">Hennessy and Patterson</a>
+2.5 Cross-Cutting Issues: The Design of Memory Hierarchies.
+Hennessy, John L.; Patterson, David A..
+Computer Architecture: A Quantitative Approach (The Morgan Kaufmann Series in Computer Architecture and Design) (p. 292).
+Elsevier Science. Kindle Edition.</p>
+<p><a id="903">Stock</a>
+Stock, Gregory and Hahn, Sebastian and Reineke, (2019)
+'Cache Persistence Analysis: Finally Exact'
+Proceedings of the 2019 IEEE Real-Time Systems Symposium (RTSS),
+http://dx.doi.org/10.1109/RTSS46320.2019.00049},
+https://arxiv.org/abs/1909.04374</p>
+<p><a id="905">Hong</a>
+Changwan Hong, Wenlei Bao, Albert Cohen, Sriram Krishnamoorthy, Louis-Noël Pouchet, Fabrice Rastello, J. Ramanujam, and P. Sadayappan. 2016.
+Effective padding of multidimensional arrays to avoid cache conflict misses.
+In Proceedings of the 37th ACM SIGPLAN Conference on Programming Language Design and Implementation (PLDI '16).
+Association for Computing Machinery, New York, NY, USA, 129–144.
+https://doi.org/10.1145/2908080.2908123</p>
+<p><a id="906">Kuehn-3</a>
+Roland Kühn, Jan Mühlig, and Jens Teubner. 2024.
+How to Be Fast and Not Furious: Looking Under the Hood of CPU Cache Prefetching.
+In Proceedings of the 20th International Workshop on Data Management on New Hardware (DaMoN '24). Association for Computing Machinery,
+New York, NY, USA, Article 9, 1–10.
+https://doi.org/10.1145/3662010.3663451</p>
+<p><a id="907">Panda 2000</a>
+Preeti Ranjan Panda, Nikil D. Dutt, and Alexandru Nicolau. 2000.
+On-chip vs. off-chip memory: the data partitioning problem in embedded processor-based systems.
+ACM Trans. Des. Autom. Electron. Syst. 5, 3 (July 2000), 682–704.
+https://doi.org/10.1145/348019.348570</p>
+<p><a id="908">Panda 2002</a>
+Preeti Ranjan Panda and Nikil D. Dutt. 2002.
+Memory Architectures for Embedded Systems-On-Chip.
+In Proceedings of the 9th International Conference on High Performance Computing (HiPC '02).
+Springer-Verlag, Berlin, Heidelberg, 647–662.
+(preprint) https://ics.uci.edu/~dutt/pubs/bc12-hipc02-panda.pdf</p>
+<p><a id="931">GNU-1</a>
+'Specifying Attributes of Variables'
+https://gcc.gnu.org/onlinedocs/gcc-3.2/gcc/Variable-Attributes.html
+Last accessed 10.10.2025</p>
+<p><a id="932">GNU-2</a>
+'7.12 Other Built-in Functions Provided by GCC'
+https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html
+Last accessed 10.10.2025</p>
+<p><a id="933">GNU-3</a>
+'3.12 Options That Control Optimization'
+https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
+Last accessed 10.10.2025</p>
+<p><a id="940">ARM-1</a>
+'Utgard Shader Core'
+https://developer.arm.com/documentation/102538/0100/Utgard-Shader-Core
+Last accessed 20.10.2025</p>
+<p><a id="950">MAN-1</a>
+<code>cacheflush(2) — Linux manual page</code>
+https://man7.org/linux/man-pages/man2/cacheflush.2.html
+Last accessed 10.10.2025</p>
+<p><a id="960">NXP-1</a>
+<code>MPC8349EA PowerQUICC™ II Pro Integrated Host Processor Family Reference Manual</code>
+https://www.nxp.com/docs/en/reference-manual/MPC8349EARM.pdf
+Last accessed 21.10.2025</p>
+<hr>
+<h3 id="answers-to-exercise-questions">Answers to exercise questions</h3>
+<p><a href="#index">Back To Index</a></p>
+<h4 id="answer-to-exercise-1---associative-caches">Answer to exercise 1 - Associative Caches</h4>
+<p>The addressing scheme is as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Set</th>
+<th>Offset</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+<p>Offset: 32 bytes -&gt; offset of 2<sup>5</sup> = 5 bits</p>
+<p>Set: <code>4</code> ways means each address represents <code>4 * 32 bytes = 128 bytes</code></p>
+<p>Cache is 8 kByte large, over four ways in blocks of 128 Bytes -&gt; <code>8 kB/128 B = 64</code> thus 2<sup>6</sup> = 6 bits</p>
+<p>Tag: the rest of the higher order address bits make up the tag address -&gt; <code>32 - 5 - 6 = 21</code>.</p>
+<h4 id="answer-to-exercise-2---cache-terminology">Answer to exercise 2 - Cache Terminology</h4>
+<p>In the context of the function never as the contents of cache are not overwritten
+In the context of the loading of the array contents, if this overwrites a line that has been made dirty from another part of the program or process then that line is flushed before being overwritten.</p>
+<h4 id="answer-to-exercise-3---hit-and-miss-rates">Answer to exercise 3 - Hit and Miss Rates</h4>
+<p>T<sub>a2</sub> = 60 ns + (0.1) * 8 * 10 ns 	-&gt; 68 ns<br>
+T<sub>a1</sub> = 40 ns + (0.1) * 68 ns 		-&gt; 46.8 ns</p>
+<h4 id="answer-to-exercise-4---prefetching">Answer to exercise 4 - Prefetching</h4>
+<ol>
+<li>Line size is 32 bytes = 8 ints -&gt; array requires 4 lines of cache -&gt; 8 compulsory cache misses for the two arrays and one for the variable temp.</li>
+<li></li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> location = 0x10000000</span>
+<span class="hljs-keyword">int</span> a[MAXSIZE] = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, … <span class="hljs-number">30</span>, <span class="hljs-number">31</span>, <span class="hljs-number">32</span>};
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> location = 0x20000080</span>
+<span class="hljs-keyword">int</span> b[MAXSIZE] = {<span class="hljs-number">32</span>, <span class="hljs-number">31</span>, <span class="hljs-number">30</span>, … <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>};
+</div></code></pre>
+<ol start="3">
+<li></li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MAXSIZE 32</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">swap</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> *, <span class="hljs-keyword">int</span> *, <span class="hljs-keyword">int</span>)</span></span>; 
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> location = 0x10000000</span>
+<span class="hljs-keyword">int</span> a[MAXSIZE] = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, … <span class="hljs-number">30</span>, <span class="hljs-number">31</span>, <span class="hljs-number">32</span>};
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> location = 0x20000080</span>
+<span class="hljs-keyword">int</span> b[MAXSIZE] = {<span class="hljs-number">32</span>, <span class="hljs-number">31</span>, <span class="hljs-number">30</span>, … <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>};
+
+swap (&amp;a, &amp;b, MAXSIZE) {
+     <span class="hljs-keyword">int</span> temp;
+     prefetch(temp);
+     prefetch(a[<span class="hljs-number">0</span>]);
+     prefetch(b[<span class="hljs-number">0</span>]);
+
+     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; MAXSIZE; i+=<span class="hljs-number">8</span>) {
+         prefetch(a[i+<span class="hljs-number">8</span>]);
+         prefetch(b[i+<span class="hljs-number">8</span>]);
+         
+         temp = a[i]; <span class="hljs-comment">// unroll 8 times</span>
+         a[i] = b[i]; <span class="hljs-comment">//</span>
+         b[i] = temp; <span class="hljs-comment">//</span>
+
+         temp = a[i++]; <span class="hljs-comment">//</span>
+         a[i] = b[i]; <span class="hljs-comment">//</span>
+         b[i] = temp; <span class="hljs-comment">//</span>
+     
+         ……
+     }
+} 
+</div></code></pre>
+<p>The loop is obviously faster because its overhead is only executed four times instead of 32 times due to loop unrolling.
+The prefetches should see to it that there are no compulsory misses
+One could argue that the pre-fetches might be better placed near the end of the loop (according to the optimal pre-fetch distance) to reduce
+the chances of cache eviction occurring and so, the prefetch being rendered useless.
+The prefetches executed in the final iteration are clear cases of cache pollution.</p>
+<hr>
+
+</body>
+</html>

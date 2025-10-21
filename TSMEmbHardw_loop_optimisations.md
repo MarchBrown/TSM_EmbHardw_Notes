@@ -254,7 +254,7 @@ For questions Q1..Q4
 
 ### Question 1 Loop Jamming / Loop Fusion
 
-Examine the following code
+Examine the following code snippet
 ```C
     // ---------- Task 1 - loop jamming / loop fusion
     // given are two loops - your task is to fuse the two loops and report on the difference in timing between
@@ -284,7 +284,7 @@ Examine the following code
 Fuse the two loops.
 
 ### Question 2 Loop Hoisting
-Examine the following code
+Examine the following code snippet
 
 ```C
 
@@ -312,7 +312,7 @@ Examine the following code
 Hoist invariant code out of the loop
 
 ### Question 3 Loop Un-Switching
-Examine the following code
+Examine the following code snippet
 
 ```C
     // ---------- Task 3 - loop un-switching
@@ -340,7 +340,7 @@ Examine the following code
 Un-Switch the code
 
 ### Question 4 Loop Peeling
-Examine the following code:
+Examine the following code snippet
 
 ```C
     // ---------- Task 4 - loop peeling
@@ -380,7 +380,7 @@ Peel this code
 
 ### Question 5 Loop Unrolling
 
-Given the program code below. Assume that all instructions execute in a single processor cycle (including the JLT instruction !).
+Given the code snippet below. Assume that all instructions execute in a single processor cycle (including the JLT instruction !).
 
 ```C
 int sum=0; 
@@ -394,7 +394,7 @@ compiles to:
 
 ```asm
     		MOVE R5,#0               ; short sum=0
-    		R0,#0                    ; for ( i=0; i <= 1000; i++ )
+    		R0,#0                    ; for ( i=0; i < 10000; i++ )
     		MOVE R1,#&a[0]           ; load address of vector a
     		MOVE R2,#&b[0]           ; load address of vector b
   	loop: 	LOAD R3,R0[R1]           ; load value of vector a
@@ -468,7 +468,7 @@ int main ( void ) {
     int c = 2;
     int d = 3;
 
-    int e = c+d
+    int e = c+d;
     // start timing measurement
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
 
@@ -564,16 +564,17 @@ BogoMIPS:            5606.40
 ```
 #### Question 5
 1. ```C
+   ADD R0,R0,#1 
    CMP R0,#10000            
    JLT loop
    ```
 2. ```text
    Prologue: 4 cycles
-   Kernel: 8 * 10001 cycles
+   Kernel: 8 * 10000 cycles
    Epilogue: 3 cycles
    ```
-3. two instructions removed so 8/6 = 1.3x
-4. two instructions removed -> 6 instructions * 100000
+3. two instructions removed so 8/5 = 1.6x
+4. three instructions removed -> 5 instructions * 100000
 5. ```text
    allocation: Registers made available by ISA
    binding: variables to registers - operations to ALU
