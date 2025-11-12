@@ -27,8 +27,13 @@ Our interest is in the effective use of cache and less how it functions.
 During exam preparation students will understand and be able to explain all the concepts printed **in bold**.
 
 ### 2.1 Cache - Fundamental Principles
-Research in the 60's formulated the principles of **locality** quite quickly. 
-A program spends significant periods of time (**temporal locality**) in sections of code (loops in other words) and data (**spatial locality**).  
+Research in the 60's formulated the idea of 
+1. **CPU bound** algorithms are algorithms that use bursts of CPU time
+2. **I/O bound** algorithms are algorithms that spend much time waiting for I/O
+
+and from this the **localisation principle** in which programs tend to spend time (**temporal locality**) in the same area (**spatial locality**). 
+Example: Code spending time executing operations on arrays. 
+
 Putting the following together
 - Fetching code/data from RAM is expensive in time
 - Principle of locality means that some sections of code/data will be frequently accessed
@@ -268,7 +273,7 @@ What are the number of offset, set and tag bits?
 [Answer](#answer-to-exercise-1---associative-caches)
 
 ### Exercise 2 - Cache Terminology
-Given the following code:
+Given the following (psudeo C) code:
 ```C 
 #define MAXSIZE 32
 
@@ -310,6 +315,7 @@ which give you the average access time of the second and first layer cache resp.
 The processor has a direct mapped data cache with lines of 32 bytes and an integer size of 32 bits. 
 Given the following code:
 
+(psuedo C)
 ```C
 #define MAXSIZE 32
 
@@ -472,7 +478,7 @@ int a[MAXSIZE] = {1, 2, 3, … 30, 31, 32};
 #pragma location = 0x20000080
 int b[MAXSIZE] = {32, 31, 30, … 3, 2, 1};
 ```
-3.
+3. (psuedo C)
 ```C
 #define MAXSIZE 32
 

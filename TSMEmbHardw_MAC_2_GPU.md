@@ -157,7 +157,37 @@ See [Hennessy & Patterson](#903) for further details.
 ARM intrinsics are documented here: [ARM-2](#905)
 
 ### 3.5 Notes to GPUs
-In the top piece of code we have a standard loop iteration over the NDRange of 4096 work items.
+#### From Processes and Threads to STMD and SIMD
+
+**Processes** are a running main(). 
+Any resources the main requires to fulfil its function, memory, files ..., belong to the main().
+This makes a process a **unit of resource ownership**. 
+When the process runs it assumes it has total control of the underlying hardware.
+If the process is running on a multi-process operating system the OS has to schedule the execution of contrnding mains().
+The OS treats the process as a **unit of schedulding**.
+
+**Threads** A process maintains threads of execution.
+A single thread process has a single thread of execution. 
+A multi thread process supports multiple threads of execution.
+The process can use a library to manage multiple threads (user-level threads).
+The OS can also know that the process is mult-threading and can support the mamagement of threads (kernel-managed threads).
+This mangement generally entails granting access to the CPU so the thread can execute. 
+Therefore, a thread is a **unit of scheduling**.
+The thread eecutes in the context of the process including its resources.
+Any, for instance, memory reserved by the thread (via `malloc()`) is owned by the process and is accessible by all threads executing in the process.
+
+See [[Stallings]](#910) or [[Tannenbaum]](#911) for further treatment.
+
+**SIMD** Single Instruction Multiple Data.
+In this case one instruction manipulates multiple data units in the same fashion.
+In other words 8 integers can be added to 8 other integers to produce 8 integers result.
+
+**STMP** Single Thread Multiple Data.
+In this case a single thread is executed in parallel on multiple data units.
+This lends itself to loop transformations which convert the loop to a single thread which can xecute multiple iterations.
+[[Stalling]]
+
+Slide with pseudocode: In the top piece of code we have a standard loop iteration over the NDRange of 4096 work items.
 The middle piece shows the grouping of work-items into work-groups of size 512 – this size can/may be «obvious» from the architecture of the GPU. 
 In other words for a GPU with 8 compute units it might be considered appropriate to subdivide the work units to get 8 work groups which can execute on the compute units. 
 
@@ -388,9 +418,19 @@ Last accessed 05.10.2025
 'Arm A-profile A64 Instruction Set Architecture'
 https://developer.arm.com/documentation/ddi0214/b/instruction-cycle-times/multiply-and-multiply-accumulate
 
-ARMV7
-https://developer.arm.com/documentation/ddi0602/2025-09/Base-Instructions/MADD--Multiply-add-?lang=en
-Last accessed 05.10.2025
+<a id="908">Andraka</a>
+http://www.andraka.com/multipli.php
+
+<a id="910">Stallings</a>
+William Stallings
+'Operating Systems: Internals and Design Principles'
+9th Edition, Pearson
+ISBN-13: 9780137516742 (2021 update)
+
+<a id="911">Tannenbaum</a>
+Andrew Tannenbaum
+'Modern Operating Systems'
+4th Edition, Pearson, 2014
 
 <a id="909">Kumar</a>
 M. Sai Kumar, D. A. Kumar and P. Samundiswary, 
@@ -398,9 +438,9 @@ M. Sai Kumar, D. A. Kumar and P. Samundiswary,
 2014 International Conference on Circuits, Power and Computing Technologies [ICCPCT-2014], Nagercoil, India, 2014, pp. 1084-1089, 
 doi: 10.1109/ICCPCT.2014.7054782.
 
-<a id="908">Andraka</a>
-http://www.andraka.com/multipli.php
-
+ARMV7
+https://developer.arm.com/documentation/ddi0602/2025-09/Base-Instructions/MADD--Multiply-add-?lang=en
+Last accessed 05.10.202
 
 ----
 ### Answers to exercise questions
