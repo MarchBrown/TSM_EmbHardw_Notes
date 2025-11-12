@@ -1,4 +1,4 @@
-<img src="./img/bus_systems/en-zhaw-ines-rgb.png" alt="Smiley face" width="176" height="92" style="float:right"> <br><br></p><h1>TSM_EmbHardw: Bus Systems</h1>
+<img src="./img/00_common/en-zhaw-ines-rgb.png" alt="Smiley face" width="176" height="92" style="float:right"> <br><br></p><h1>TSM_EmbHardw: Bus Systems</h1>
 
 ----
 ### Index
@@ -104,7 +104,7 @@ That is the collection of signals (address, data, control) and their timing rela
 This can be seen in the figure below where the relationship between timing events is clearly driven by the processor clock
 
 <figure class="image">
-  <img src="./img/bus_systems/ISA-read-write.svg" alt="ISA Bus timing">
+  <img src="./img/02_bus_systems/ISA-read-write.svg" alt="ISA Bus timing">
   <figcaption><b>Figure 1:</b> Industry Standard Architecture (ISA) mem/I/O bus timing</figcaption>
 </figure> 
 
@@ -152,7 +152,7 @@ To mitigate this issue, bridges can also be used to separate bus systems into di
 This represents a *multi-level* bus
 
 <figure class="image">
-  <img src="./img/bus_systems/multi-level-bus.svg" alt="ARM multilevel bus">
+  <img src="./img/02_bus_systems/multi-level-bus.svg" alt="ARM multilevel bus">
   <figcaption><b>Figure 2:</b> ARMs conception of a multilevel bus with a, for the time, high-speed bus (AHB) bridged with a peripheral bus (APB) upon which I/O is attached</figcaption>
 </figure> 
 

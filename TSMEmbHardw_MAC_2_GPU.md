@@ -1,4 +1,4 @@
-<img src="./img/bus_systems/en-zhaw-ines-rgb.png" alt="Smiley face" width="176" height="92" style="float:right"> <br><br></p><h1>TSM_EmbHardw: MAC to GPU</h1>
+<img src="./img/00_common/en-zhaw-ines-rgb.png" alt="Smiley face" width="176" height="92" style="float:right"> <br><br></p><h1>TSM_EmbHardw: MAC to GPU</h1>
 
 ----
 ### Index

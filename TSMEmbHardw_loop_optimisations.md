@@ -1,4 +1,4 @@
-<img src="./img/bus_systems/en-zhaw-ines-rgb.png" alt="Smiley face" width="176" height="92" style="float:right"> <br><br></p><h1>TSM_EmbHardw: Loop Optimisations</h1>
+<img src="./img/00_common/en-zhaw-ines-rgb.png" alt="Smiley face" width="176" height="92" style="float:right"> <br><br></p><h1>TSM_EmbHardw: Loop Optimisations</h1>
 
 ----
 ### Index
@@ -176,21 +176,21 @@ The backend deals with the Instruction Set Architecture (ISA) (x86, ARM, RISC-V 
 A basic block is a sequence of instructions where the control flow enters at the beginning and exits at the end, without stopping in-between or branching (except at the end). 
 
 <figure class="image">
-  <img src="./img/loop_optimisations/basic_block.png" alt="Depiction of a basic block">
+  <img src="./img/03_loop_optimisations/basic_block.png" alt="Depiction of a basic block">
   <figcaption><b>Figure 1:</b> Depiction of a basic block</figcaption>
 </figure>
 
 What the compiler then does is to perform a lexical analysis (from: [Plessl](#902))
 
 <figure class="image">
-  <img src="./img/loop_optimisations/compilers_lexical_analysis.png" alt="Lexical analysis of source code">
+  <img src="./img/03_loop_optimisations/compilers_lexical_analysis.png" alt="Lexical analysis of source code">
   <figcaption><b>Figure 2:</b> The compiler performs a lexical analysis of the source code (compiler frontend)</figcaption>
 </figure>
 
 from which it generates a so called degenerated control graphs, that is each node is a basic block rather than an individual instruction. (from: [Plessl](#902))
 
 <figure class="image">
-  <img src="./img/loop_optimisations/compilers_syntatic_analysis.png" alt="Syntatic and semantic analysis of source code">
+  <img src="./img/03_loop_optimisations/compilers_syntatic_analysis.png" alt="Syntatic and semantic analysis of source code">
   <figcaption><b>Figure 3:</b> The compiler then performs syntatic and semantic analysis of source code (compiler frontend)</figcaption>
 </figure>
 
@@ -201,7 +201,7 @@ It then attempts to optimise this code before generating machine dependent code.
 This code is then further optimised using machine-dependent knowledge. (from: [Plessl](#902))
 
 <figure class="image">
-  <img src="./img/loop_optimisations/compilers_code_generation.png" alt="Generating intermediate code">
+  <img src="./img/03_loop_optimisations/compilers_code_generation.png" alt="Generating intermediate code">
   <figcaption><b>Figure 4:</b> The compiler generates intermediate code and performs optimisations (middle) before generating platform specific code (backend)</figcaption>
 </figure>
 
