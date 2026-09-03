@@ -21,36 +21,123 @@ These include correct alignment, prefetching, tiling and locking and some consid
 ----
 
 ## 2 Lecture Prologue
-The concept of cache is an old one. Both [Hardy](#901) and [Hennesy and Patterson](#902) handle the basics and advanced concepts quite well. 
 Our interest is in the effective use of cache and less how it functions.
+There is an overlap of the two so we use this chapter to recap some cache fundamentals. 
+For further details, both [Hardy](#901) and [Hennesy and Patterson](#902) handle the basics and advanced concepts quite well. 
 
 During exam preparation students will understand and be able to explain all the concepts printed **in bold**.
 
-### 2.1 Cache - Fundamental Principles
+### 2.1 Cache - Grounding Theory
 Research in the 60's formulated the idea of 
-1. **CPU bound** algorithms are algorithms that use bursts of CPU time
-2. **I/O bound** algorithms are algorithms that spend much time waiting for I/O
+- **CPU bound** algorithms are algorithms that use bursts of CPU time
+- **I/O bound** algorithms are algorithms that spend much time waiting for I/O
 
-and from this the **localisation principle** in which programs tend to spend time (**temporal locality**) in the same area (**spatial locality**). 
-Example: Code spending time executing operations on arrays. 
+from this the **localisation principle** can be derived
+- Programs tend to spend time (**temporal locality**) in the same area (**spatial locality**). 
 
-Putting the following together
+Example: code in loops (spatial) spending time (temporal) executing operations on arrays (spatial). 
+
+We know, implicitly or explicitly, that
+- External accesses by a CPU are expensive in time, therefore
 - Fetching code/data from RAM is expensive in time
 - Principle of locality means that some sections of code/data will be frequently accessed
 - Local temporary storage of this code/data will save time and increase performance of the platform
-- To preserve performance this local memory should be maintenance free and so transparent to the programmer
-- RAM is expensive in space
 
-brings us to the idea of cache. 
+There are two solutions to achieve this local temporary storage
+- **cache** 
+- **tightly coupled memory** (TCM aka **scratchpad memory** (SCM))
 
-Cache is part of the **memory hierarchy** and typically multilevel L1 -> L3. 
+Cache has its adherents because 
+- Pro: This form of local memory is maintenance free and so transparent to the programmer$
+- Con: You are stuck with what the CPU designer chooses to give you
+
+Whereas 
+- Con: TCM typically requires runtime maintenance by the programmer
+- Pro: TCM gives the programmer options to use it as she wishes
+
+### Local Memory - Integration in Computer Architecture
+Memory is
+- slower than the CPU
+- expensive in silicon footprint
+
+Cache and TCM are therfore substantially smaller than main memory.
+There exists, therefore, the concept of **memory hierarchy** 
+
+
+Cache is part of the memory hierarchy and typically multilevel L1 -> L3.
 L1 and L2 are typically within the microcontroller package, L3 external.
 L1 and L2 are standard on midrange embedded processors.
+Cache is *transparent* to the programmer - there is a limited API between the memory and the programmer.
+TCM is not really mart of the memory hierarchy, being totally under the control of the programmer.
+Both memories are typically SRAM implementations.
 
-Cache is commonly understood as a small, hardware managed, memory tightly coupled with the processor holding code and data sparing the processor from avoidable external memory fetches.
-To a certain extent cache can be considered a form of **loop optimisation**.
-The other form of memory tightly attached to the CPU is tightly coupled memory (TCM), or scratchpad memory (SPM). 
-This memory is in the address range of the processor and is not transparent to the programmer.
+Referring to the figure below.
+On the far left we see the integration of TCM in the memory hierarchy. 
+It is only part of the hierarchy insofar that being local, the access times are substantially smaller than memory located outside of the CPU package.
+Modern microcontrollers will typically integrate cache and may offer TCM.
+Even if TCM is offered by the CPU architecture, an (**rich** operating system, typically a multi-process OS like Linux) operating system may not support it (case in point RaspiOS - for further details see Section 4: Lecture Epilogue).
+
+In the middle we see the memory hierarchy of a typical (modern - aka 32/64-bit) embedded processor.
+There are two cascaded cache levels (L1 & L2) in the CPU package **in the path** to external main memory.
+
+In the far right we see the memory hierarchy of a higher-end processor (think desktop/laptop-grade CPU).
+There are three cascaded cache levels (L1, L2 & L3) in the CPU package **in the path** to external main memory.
+
+<figure class="image">
+  <img src="./img/05_cache/memory_hierarchy.png" alt="Memory Hierarchy">
+  <figcaption><b>Figure 1:</b> Memory Hierarchy</figcaption>
+</figure>
+
+### Cache - Components
+Cache consists of 
+- a cache space, the memory itself 
+- a cache tag directory
+- a cache controller
+
+#### Cache Memory
+Cache memory is organised in **cache lines** (aka **blocks** - I prefer the use of the word "lines" because it is more specific).
+The size of a L1 cache line is CPU (but not instruction set architecture (ISA)) specific. 
+The size of the cache line varies between 32 and 64 bytes.
+An L1 cache of 2 kBytes therefore supports 32 cache lines.
+L2 and L3 typically support the same line size.
+
+#### Cache Tag Directory
+Cache memory is substantially smaller than main memory so the entire address range of main memory must be mapped in some way into cache memory.
+The fundamental granularity of upstream cache memory access is the smallest access unit of the CPU (typically a byte).
+The fundamental granularity of downstream cache memory access is a line.
+For large main memory to be *transparently* mapped into substantially smaller cache memory an addressing scheme is required.
+This mapping is best explained with an example.
+
+Example - 
+- main memory = 8 bits wide, 64 kBytes -> 16-bit address bus
+- cache L1 memory = 4 kBytes @ line size 32 bits 
+
+From the far right. an 8-bit wide, 64 kBytes memory features an address range from #0000 -> #FFFF.
+From the (downstream) point of view of a cache with 32-byte line size, this is modelled as a 32-byte wide memory with address range from #0000 -> #FFE0.
+From the upstream point of view of a cache the processor can access in byte increments so accessing the bytes in the first line can be achieved from offset #00 -> #1F
+This represents 2high5 bits, so the offset part of the address are the 5 least-significant bits.
+The other 11 address bits are required to identify from where the cache line has been filled.
+These 11 bits are entered by the cache controller into the tag directory. 
+
+<figure class="image">
+  <img src="./img/05_cache/memory_cache_mapping.png" alt="Memory->Cache Mapping">
+  <figcaption><b>Figure 1:</b> Memory->Cache Mapping</figcaption>
+</figure>
+
+#### Cache Controller
+The cache controller manages the cache system to varying degrees of complexity.
+Its most fundamental task is to check, during a CPU driven memory request, whether the requested datum is in cache memory (L1 ... L3) or needs to be fetched from main memory.
+It does this ion the basis of the tag directory, comparing the tag address of the required datum with that of the entries in the tag directory.
+If it can't find the tag address it repeats this search in the tag directory of L2 cache and so on until it recognises that the datum is not in cache and must be retrieved from external memory. 
+
+The cache controller implements architecture-individual **cache policies**, which will be touched on later. 
+
+<figure class="image">
+  <img src="./img/05_cache/memory_cache_mapping.png" alt="Memory->Cache Mapping">
+  <figcaption><b>Figure 1:</b> Memory->Cache Mapping</figcaption>
+</figure>
+
+### Cache - Hit and Miss Rates
 
 Cache size and policies affect the hit rate. 
 The **hit rate** is the probability that the looked-for datum is resident in the cache. 
